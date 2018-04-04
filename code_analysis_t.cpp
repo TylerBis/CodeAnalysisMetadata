@@ -54,7 +54,7 @@ int main() {
         request.option_language = "";
 
         auto filename = analysis_filename(request);
-        assert(filename == "");
+        assert(filename == "entry_filename");
         assert(analysis_url(request) == "");
         assert(analysis_language(request, filename) == "");
         assert(code_analysis(request) == false);
