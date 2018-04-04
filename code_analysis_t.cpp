@@ -113,5 +113,22 @@ int main() {
         assert(code_analysis(request) == false);
     }
 
+    // option_language filled in
+    {
+        analysis_request request;
+        request.given_filename  = "";
+        request.entry_filename  = "";
+        request.given_url       = "";
+        request.option_filename = "";
+        request.option_url      = "";
+        request.option_language = "option_language";
+
+        auto filename = analysis_filename(request);
+        assert(filename == "");
+        assert(analysis_url(request) == "");
+        assert(analysis_language(request, filename) == "option_language");
+        assert(code_analysis(request) == false);
+    }
+
     return 0;
 }
