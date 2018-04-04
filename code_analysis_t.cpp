@@ -28,6 +28,7 @@ int main() {
         assert(code_analysis(request) == false);
     }
 
+    // only option_filename filled in
     {
         analysis_request request;
         request.given_filename  = "";
@@ -44,6 +45,7 @@ int main() {
         assert(code_analysis(request) == false);
     }
 
+    // given_filename (as source-code file) and entry_filename filled in
     {
         analysis_request request;
         request.given_filename  = "given_filename.cpp";
@@ -56,6 +58,40 @@ int main() {
         auto filename = analysis_filename(request);
         assert(filename == "entry_filename");
         assert(analysis_url(request) == "");
+        assert(analysis_language(request, filename) == "");
+        assert(code_analysis(request) == false);
+    }
+
+    // given_filename (as regular file) and entry_filename filled in
+    {
+        analysis_request request;
+        request.given_filename  = "given_filename.txt";
+        request.entry_filename  = "data";
+        request.given_url       = "";
+        request.option_filename = "";
+        request.option_url      = "";
+        request.option_language = "";
+
+        auto filename = analysis_filename(request);
+        assert(filename == "given_filename.txt");
+        assert(analysis_url(request) == "");
+        assert(analysis_language(request, filename) == "");
+        assert(code_analysis(request) == false);
+    }
+
+    // given_url filled in
+    {
+        analysis_request request;
+        request.given_filename  = "";
+        request.entry_filename  = "";
+        request.given_url       = "given_url";
+        request.option_filename = "";
+        request.option_url      = "";
+        request.option_language = "";
+
+        auto filename = analysis_filename(request);
+        assert(filename == "");
+        assert(analysis_url(request) == "given_url");
         assert(analysis_language(request, filename) == "");
         assert(code_analysis(request) == false);
     }
