@@ -46,7 +46,8 @@ std::string analysis_filename(const analysis_request& request) {
  * @retval URL
  */
 std::string analysis_url(const analysis_request& request) {
-
+    if (request.option_url != "")
+      return request.option_url;
     return request.given_url;
 }
 
