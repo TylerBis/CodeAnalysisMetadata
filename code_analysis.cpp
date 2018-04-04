@@ -47,7 +47,7 @@ std::string analysis_filename(const analysis_request& request) {
  */
 std::string analysis_url(const analysis_request& request) {
 
-    return "";
+    return request.given_url;
 }
 
 /** Language extracted from the request and the filename
