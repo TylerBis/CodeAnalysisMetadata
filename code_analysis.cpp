@@ -33,7 +33,7 @@ bool code_analysis(const analysis_request& request) {
  */
 std::string analysis_filename(const analysis_request& request) {
 
-    return "";
+    return request.option_filename;
 }
 
 /** URL extracted from the request
