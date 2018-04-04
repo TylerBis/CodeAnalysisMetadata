@@ -57,6 +57,6 @@ std::string analysis_url(const analysis_request& request) {
  * @retval language
  */
 std::string analysis_language(const analysis_request& request, const std::string& filename) {
-
+    
     return request.option_language;
 }
