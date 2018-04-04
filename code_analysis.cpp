@@ -32,8 +32,13 @@ bool code_analysis(const analysis_request& request) {
  * @retval filename
  */
 std::string analysis_filename(const analysis_request& request) {
-
-    return request.option_filename;
+    if (request.option_filename != "")
+      return request.option_filename;
+    std::string ext = get_language_from_filename(request.given_filename);
+    if (ext == "")
+      return request.given_filename;
+    else
+      return request.entry_filename;
 }
 
 /** URL extracted from the request
