@@ -37,8 +37,7 @@ std::string analysis_filename(const analysis_request& request) {
     std::string ext = get_language_from_filename(request.given_filename);
     if (ext != "")
       return request.given_filename;
-    else
-      return request.entry_filename;
+    return request.entry_filename;
 }
 
 /** URL extracted from the request
@@ -57,6 +56,7 @@ std::string analysis_url(const analysis_request& request) {
  * @retval language
  */
 std::string analysis_language(const analysis_request& request, const std::string& filename) {
-
-    return request.option_language;
+    if (request.option_language != "")
+      return request.option_language;
+    return get_language_from_filename(request.given_filename);
 }

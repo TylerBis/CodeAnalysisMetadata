@@ -130,5 +130,22 @@ int main() {
         assert(code_analysis(request) == false);
     }
 
+    // test for stdin for regular file and option_filename specified
+    {
+        analysis_request request;
+        request.given_filename  = "-";
+        request.entry_filename  = "data";
+        request.given_url       = "";
+        request.option_filename = "option_filename";
+        request.option_url      = "";
+        request.option_language = "";
+
+        auto filename = analysis_filename(request);
+        assert(filename == "option_filename");
+        assert(analysis_url(request) == "");
+        assert(analysis_language(request, filename) == "");
+        assert(code_analysis(request) == false);
+    }
+
     return 0;
 }
