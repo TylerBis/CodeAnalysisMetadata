@@ -58,5 +58,5 @@ std::string analysis_url(const analysis_request& request) {
 std::string analysis_language(const analysis_request& request, const std::string& filename) {
     if (request.option_language != "")
       return request.option_language;
-    return get_language_from_filename(request.given_filename);
+    return get_language_from_filename(filename);
 }
