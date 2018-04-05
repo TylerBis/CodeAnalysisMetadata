@@ -48,7 +48,7 @@ int main() {
     // given_filename (as source-code file) and entry_filename filled in
     {
         analysis_request request;
-        request.given_filename  = "given_filename.cpp";
+        request.given_filename  = "given_filename.zip";
         request.entry_filename  = "entry_filename";
         request.given_url       = "";
         request.option_filename = "";
@@ -65,7 +65,7 @@ int main() {
     // given_filename (as regular file) and entry_filename filled in
     {
         analysis_request request;
-        request.given_filename  = "given_filename.txt";
+        request.given_filename  = "given_filename.cpp";
         request.entry_filename  = "data";
         request.given_url       = "";
         request.option_filename = "";
@@ -73,7 +73,7 @@ int main() {
         request.option_language = "";
 
         auto filename = analysis_filename(request);
-        assert(filename == "given_filename.txt");
+        assert(filename == "given_filename.cpp");
         assert(analysis_url(request) == "");
         assert(analysis_language(request, filename) == "");
         assert(code_analysis(request) == false);
