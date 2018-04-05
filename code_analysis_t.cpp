@@ -34,14 +34,14 @@ int main() {
         request.given_filename  = "";
         request.entry_filename  = "";
         request.given_url       = "";
-        request.option_filename = "option_filename";
+        request.option_filename = "option_filename.cpp";
         request.option_url      = "";
         request.option_language = "";
 
         auto filename = analysis_filename(request);
-        assert(filename == "option_filename");
+        assert(filename == "option_filename.cpp");
         assert(analysis_url(request) == "");
-        assert(analysis_language(request, filename) == "");
+        assert(analysis_language(request, filename) == "C++");
         assert(code_analysis(request) == false);
     }
 
@@ -121,12 +121,12 @@ int main() {
         request.given_url       = "";
         request.option_filename = "";
         request.option_url      = "";
-        request.option_language = "option_language";
+        request.option_language = "C++";
 
         auto filename = analysis_filename(request);
         assert(filename == "");
         assert(analysis_url(request) == "");
-        assert(analysis_language(request, filename) == "option_language");
+        assert(analysis_language(request, filename) == "C++");
         assert(code_analysis(request) == false);
     }
 
@@ -136,14 +136,48 @@ int main() {
         request.given_filename  = "-";
         request.entry_filename  = "data";
         request.given_url       = "";
-        request.option_filename = "option_filename";
+        request.option_filename = "option_filename.cpp";
         request.option_url      = "";
         request.option_language = "";
 
         auto filename = analysis_filename(request);
-        assert(filename == "option_filename");
+        assert(filename == "option_filename.cpp");
+        assert(analysis_url(request) == "");
+        assert(analysis_language(request, filename) == "C++");
+        assert(code_analysis(request) == false);
+    }
+
+    // test for stdin for archive file
+    {
+        analysis_request request;
+        request.given_filename  = "-";
+        request.entry_filename  = "entry_filename.zip";
+        request.given_url       = "";
+        request.option_filename = "";
+        request.option_url      = "";
+        request.option_language = "";
+
+        auto filename = analysis_filename(request);
+        assert(filename == "entry_filename.zip");
         assert(analysis_url(request) == "");
         assert(analysis_language(request, filename) == "");
+        assert(code_analysis(request) == false);
+    }
+
+    // test for stdin with entry_filename == "data" and option_filename == ""
+    {
+        analysis_request request;
+        request.given_filename  = "-";
+        request.entry_filename  = "data";
+        request.given_url       = "";
+        request.option_filename = "";
+        request.option_url      = "";
+        request.option_language = "C++";
+
+        auto filename = analysis_filename(request);
+        assert(filename == "");
+        assert(analysis_url(request) == "");
+        assert(analysis_language(request, filename) == "C++");
         assert(code_analysis(request) == false);
     }
 
