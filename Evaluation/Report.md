@@ -86,60 +86,60 @@
 
 ## Code
 % srcml code_analysis.cpp code_analysis_t.cpp -o project.xml
-% srcml --xpath="//src:function[src:name='code_analysis']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='code_analysis']" project.xml | srcml
 
-    bool code_analysis(const analysis_request& request) {
-    
-        auto filename = analysis_filename(request);
-    
-        auto url = analysis_url(request);
-    
-        auto language = analysis_language(request, filename);
-    
-        // code analysis processing that is not yet implemented
-    
-        // error handling
-        if (language == "") {
-          std::cerr << "Extension not supported\n";
-          if (request.given_filename == "-")
-            std::cerr << "Using stdin requires a declared language\n";
-        return false;
-        }
-    
-        return false;
-    }
+     1 bool code_analysis(const analysis_request& request) {
+     2 
+     3     auto filename = analysis_filename(request);
+     4 
+     5     auto url = analysis_url(request);
+     6 
+     7     auto language = analysis_language(request, filename);
+     8 
+     9     // code analysis processing that is not yet implemented
+    10 
+    11     // error handling
+    12     if (language == "") {
+    13       std::cerr << "Extension not supported\n";
+    14       if (request.given_filename == "-")
+    15         std::cerr << "Using stdin requires a declared language\n";
+    16     return false;
+    17     }
+    18 
+    19     return false;
+    20 }
 
-% srcml --xpath="//src:function[src:name='analysis_filename']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_filename']" project.xml | srcml
 
-    std::string analysis_filename(const analysis_request& request) {
-        if (request.given_filename == "-" && request.entry_filename == "data" && request.option_filename == "")
-          return "";
-        if (request.option_filename != "")
-          return request.option_filename;
-        std::string ext = get_language_from_filename(request.given_filename);
-        if (ext != "")
-          return request.given_filename;
-        return request.entry_filename;
-    }
+     1 std::string analysis_filename(const analysis_request& request) {
+     2     if (request.given_filename == "-" && request.entry_filename == "data" && request.option_filename == "")
+     3       return "";
+     4     if (request.option_filename != "")
+     5       return request.option_filename;
+     6     std::string ext = get_language_from_filename(request.given_filename);
+     7     if (ext != "")
+     8       return request.given_filename;
+     9     return request.entry_filename;
+    10 }
 
-% srcml --xpath="//src:function[src:name='analysis_url']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_url']" project.xml | srcml
 
-    std::string analysis_url(const analysis_request& request) {
-        if (request.option_url != "")
-          return request.option_url;
-        return request.given_url;
-    }
+     1 std::string analysis_url(const analysis_request& request) {
+     2     if (request.option_url != "")
+     3       return request.option_url;
+     4     return request.given_url;
+     5 }
 
-% srcml --xpath="//src:function[src:name='analysis_language']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_language']" project.xml | srcml
 
-    std::string analysis_language(const analysis_request& request, const std::string& filename) {
-        if (request.option_language != "")
-          return request.option_language;
-        return get_language_from_filename(filename);
-    }
+     1 std::string analysis_language(const analysis_request& request, const std::string& filename) {
+     2     if (request.option_language != "")
+     3       return request.option_language;
+     4     return get_language_from_filename(filename);
+     5 }
 
 ## Test Cases 
-% srcml code_analysis_t.cpp --xpath="//src:function[src:name='main']/src:block" | srcml | cat -v
+% srcml code_analysis_t.cpp --xpath="//src:function[src:name='main']/src:block" | srcml
 
     {
     
@@ -337,7 +337,10 @@
 
     g++ -std=c++11 -c code_analysis_t.cpp
     g++ -std=c++11 -c code_analysis.cpp
+    g++ -std=c++11 -c get_language_from_filename.cpp
     g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    g++ -std=c++11 -c get_language_from_filename_t.cpp
+    g++ get_language_from_filename_t.o get_language_from_filename.o -o get_language_from_filename_t
 
 % git show
 
@@ -374,11 +377,13 @@
          return 0;
      }
 
+
 ### Commit f99727
 % git checkout -q f99727  
 % make  
 
-    make: Nothing to be done for `all'.
+    g++ -std=c++11 -c code_analysis.cpp
+    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
 
 % git show
 
@@ -401,6 +406,7 @@
      }
      
      /** URL extracted from the request
+
 
 ### Commit 2c79d3
 % git checkout -q 2c79d3  
@@ -444,6 +450,7 @@
          return 0;
      }
 
+
 ### Commit 880062
 % git checkout -q 880062  
 % make  
@@ -471,6 +478,7 @@
              assert(analysis_url(request) == "");
              assert(analysis_language(request, filename) == "");
              assert(code_analysis(request) == false);
+
 
 ### Commit 7fee25
 % git checkout -q 7fee25  
@@ -507,6 +515,7 @@
      }
      
      /** URL extracted from the request
+
 
 ### Commit 91b20f
 % git checkout -q 91b20f  
@@ -584,6 +593,7 @@
          return 0;
      }
 
+
 ### Commit d3f942
 % git checkout -q d3f942  
 % make  
@@ -612,6 +622,7 @@
      }
      
      /** Language extracted from the request and the filename
+
 
 ### Commit 28c15a
 % git checkout -q 28c15a  
@@ -656,6 +667,7 @@
          return 0;
      }
 
+
 ### Commit b571e9
 % git checkout -q b571e9  
 % make  
@@ -685,6 +697,7 @@
          return request.given_url;
      }
      
+
 
 ### Commit 42cb9c
 % git checkout -q 42cb9c  
@@ -729,6 +742,7 @@
          return 0;
      }
 
+
 ### Commit 3a37f4
 % git checkout -q 3a37f4  
 % make  
@@ -756,6 +770,7 @@
     +    return request.option_language;
      }
 
+
 ### Commit 0b5e74
 % git checkout -q 0b5e74  
 % make  
@@ -782,6 +797,7 @@
     +    
          return request.option_language;
      }
+
 
 ### Commit a25f1c
 % git checkout -q a25f1c  
@@ -852,6 +868,7 @@
              assert(analysis_language(request, filename) == "");
              assert(code_analysis(request) == false);
 
+
 ### Commit 15c62f
 % git checkout -q 15c62f  
 % make  
@@ -918,6 +935,7 @@
          return 0;
      }
 
+
 ### Commit 8c2680
 % git checkout -q 8c2680  
 % make  
@@ -946,6 +964,7 @@
              assert(code_analysis(request) == false);
          }
      
+
 
 ### Commit c0d872
 % git checkout -q c0d872  
@@ -1052,6 +1071,7 @@
          return 0;
      }
 
+
 ### Commit a411fb
 % git checkout -q a411fb  
 % make  
@@ -1078,6 +1098,7 @@
     -    return get_language_from_filename(request.given_filename);
     +    return get_language_from_filename(filename);
      }
+
 
 ### Commit 13faf2
 % git checkout -q 13faf2  
@@ -1106,6 +1127,7 @@
          if (request.option_filename != "")
            return request.option_filename;
          std::string ext = get_language_from_filename(request.given_filename);
+
 
 ### Commit 8d5ca0
 % git checkout -q 8d5ca0  
